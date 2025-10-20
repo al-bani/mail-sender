@@ -28,7 +28,6 @@ func main() {
 	log.Println("ngetes")
 
 	r := gin.Default()
-	// aktifkan CORS default (Allow-All). Untuk produksi, set konfigurasi khusus.
 	r.Use(cors.Default())
 
 	r.POST("/send-email", func(c *gin.Context) {
@@ -42,13 +41,7 @@ func main() {
         pass := os.Getenv("SMTP_PASS")
         // tentukan penerima: SMTP_TO > req.Email > fallback ke from
         to := os.Getenv("SMTP_TO")
-        if to == "" {
-            if req.Email != "" {
-                to = req.Email
-            } else {
-                to = from
-            }
-        }
+
         subject := req.Subject
         body := fmt.Sprintf(
             "From: %s\nEmail: %s\n\n%s",
@@ -88,5 +81,5 @@ func main() {
 		c.JSON(200, gin.H{"message": "Email berhasil dikirim!"})
 	})
 
-	r.Run(":8080")
+	r.Run(":8081")
 }
